@@ -15,19 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="proj5.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LL_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Bar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
