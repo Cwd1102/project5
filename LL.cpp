@@ -138,8 +138,14 @@ private:
 	//                 to have no memory leaks!
 	template <class T>
 	LL<T>::~LL() {
-
-
+		Node<T>* curr = m_head;
+		Node<T>* prev = m_head;
+		while (curr != nullptr) {
+			prev = curr;
+			curr = curr->GetNext();
+			delete prev;
+			prev = nullptr;
+		}
 	}
 	// Name: LL (Copy Constructor)
 	// Desc: Creates a copy of existing LL
@@ -270,8 +276,24 @@ private:
 	// Preconditions: LL with at least one node. 
 	// Postconditions: Removes first node with passed value (in first)
 	template <class T>
-	void LL<T>::RemoveAt(const T&) {
+	void LL<T>::RemoveAt(const T& data) {
+		Node<T> *curr = m_head;
+		Node<T> *prev = m_head;
+		bool found = false;
+		
+		while ((curr != nullptr) && !(found)) {
+			if (curr->GetData().first == data) {
+				prev->SetNext(curr->GetNext());
+				delete curr;
+				found = true;
+				m_size--;
+			}
+			else {
+				prev = curr;
+				curr = curr->GetNext();
+			}
 
+		}
 	}
 	// Name: Display
 	// Desc: Display all nodes in linked list
