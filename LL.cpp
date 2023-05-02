@@ -212,7 +212,6 @@ private:
 		Node<T>* newNode = new Node<T>(data);
 		pair <T, int> tempData = make_pair(data, 1);
 		bool check = false;
-
 		//if LL is empty
 		if (m_head != nullptr) {
 			//if LL had more than one element
@@ -223,6 +222,8 @@ private:
 					tempData = find->GetData();
 					tempData.second++;
 					find->SetData(tempData);
+					delete newNode;
+					newNode = nullptr;
 				}
 				else {
 					//if LL has one element

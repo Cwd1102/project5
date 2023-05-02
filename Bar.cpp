@@ -4,7 +4,10 @@
 // Desc: Dynamically allocates m_data for strings (always). m_fileName defaults to test.txt
 // Preconditions: Input file has correctly formatted input
 // Postconditions: Returns list of items and their frequency (stored in LL)
-Bar::Bar() {}
+Bar::Bar() {
+	m_fileName = "test.txt";
+	m_data = new LL<string>;
+}
 // Name: Bar (Overloaded Constructor)
 // Desc: Used to pass an input file
 //       Dynamically allocates m_data for strings (always)
@@ -19,7 +22,9 @@ Bar::Bar(string filename){
 // Desc: Deallocates m_data
 // Preconditions: m_data has been dynamically allocated
 // Postconditions: m_data is empty
-Bar::~Bar() {}
+Bar::~Bar() {
+	delete m_data;
+}
 // Name: Start
 // Desc: Calls LoadFile, RemoveCommon, RemoveSingles, Sort, DisplayBars, and Export
 //       During testing, may want to call Display
@@ -31,6 +36,7 @@ void Bar::Start() {
 	RemoveSingles();
 	SortData();
 	DisplayBars();
+	//Export();
 }
 // Name: LoadFile()
 // Desc: Loads a file (everything as a string although could be anything stringlike)
@@ -39,30 +45,56 @@ void Bar::Start() {
 // Preconditions: m_fileName is populated with good data
 // Postconditions: m_data is populated
 void Bar::LoadFile() {
-	string word = " ";
+	string word = "";
+	string newString = "";
 	ifstream myFile;
 	myFile.open(m_fileName);
+	int numWords = 0;
 
 	if (myFile.is_open()) {
 		cout << "File opened" << endl;
+		while (getline(myFile, word, ' ')) {
+			newString += (word + " ");
+		}
+		word = "";
 	}
 	else {
 		cout << "File not opened" << endl;
 	}
 
+	for (unsigned int i = 0; i < newString.size() - 1; i++) {
+
+		if (newString.at(i) == '\n') {
+			RemovePunct(word);
+			m_data->Insert(word);
+			word = "";
+			numWords++;
+		}
+		else if (newString.at(i) == ' ') {
+			RemovePunct(word);
+			m_data->Insert(word);
+			word = "";
+			numWords++;
+		}
+		else {
+			word += newString.at(i);
+		}
+	}
+/*
 	while (word != "") {
-		getline(myFile, word , ' ');
-		if (myFile.peek() == -1) {
+		if (myFile.peek() == EOF) {
 			word.erase(word.size() - 1);
 		}
 		RemovePunct(word);
 		m_data->Insert(word);
-		if (myFile.peek() == -1) {
+		if (myFile.peek() == EOF) {
 			word = "";
 		}
+		numWords++;
 	}
+	*/
 	//m_data->Display();
-
+	cout << numWords << " words loaded" << endl;
 }
 // Name: RemovePunct (passed a string)
 // Desc: Converts all input into lowercase using tolower
@@ -96,6 +128,8 @@ void Bar::RemovePunct(string& word) {
 void Bar::RemoveCommon() {
 	string choice = "";
 	pair<string, int> set;
+	string excludeList = "";
+	string tempExList = "";
 	cout << "Would you like to remove all common words (Only use with essays)?" << endl;
 	cin >> choice;
 	for (unsigned int i = 0; i < choice.size(); i++) {
@@ -105,7 +139,15 @@ void Bar::RemoveCommon() {
 		for (int i = 0; i < m_data->GetSize(); i++) {
 			set = (*m_data)[i];
 			for (unsigned int j = 0; j < EXCLUDE_LIST.size(); j++) {
-				if (EXCLUDE_LIST.at(j) == set.first) {
+				excludeList = EXCLUDE_LIST.at(j);
+				for (string::iterator it = excludeList.begin(); it != excludeList.end(); it++) {
+					if (*it != ' ') {
+						tempExList += *it;
+					}
+				}
+				excludeList = tempExList;
+				tempExList = "";
+				if (excludeList == set.first) {
 					m_data->RemoveAt(set.first);
 					//makes sure iterator doesnt skip an index
 					i--;
@@ -114,9 +156,8 @@ void Bar::RemoveCommon() {
 			}
 
 		}
+		cout << "All common words removed." << endl;
 	}
-
-	cout << "All common words removed." << endl;
 	//m_data->Display();
 }
 // Name: RemoveSingles
@@ -144,10 +185,8 @@ void Bar::RemoveSingles() {
 				i--;
 				numRemoved++;
 			}
-
-		
 		}
-		cout << numRemoved << " removed" << endl;
+		cout << numRemoved << " removed." << endl;
 		//m_data->Display();
 
 	}
@@ -175,17 +214,34 @@ void Bar::SortData() {
 // Preconditions:  m_dataSorted is populated
 // Postconditions: Bar charts are displayed
 void Bar::DisplayBars() {
-	for (multimap<int, string>::iterator it = m_dataSorted.begin(); it != m_dataSorted.end(); it++) {
-		cout << it->second  << ": " << it->first << endl;
-
-
-
+	int i = 0;
+	for (multimap<int, string>::reverse_iterator rp = m_dataSorted.rbegin(); rp != m_dataSorted.rend(); rp++) {
+		cout << setw(16) << rp->second << ": ";
+		for (int i = 0; i < rp->first; i++) {
+			cout << barChar;
+		}
+		cout << endl;
 	}
-
 }
 // Name: Export
 // Desc: Asks the user what name the export file should be called
 //       Iterates through m_dataSorted and exports to file
 // Preconditions: m_dataSorted is populated
 // Postconditions: New export file is created and populated with a formatted bar chart
-void Bar::Export() {}
+void Bar::Export() {
+	string name = "";
+
+	cout << "What would you like to call your export file?" << endl;
+	cin >> name;
+
+	ofstream outfile(name);
+	for (multimap<int, string>::reverse_iterator rp = m_dataSorted.rbegin(); rp != m_dataSorted.rend(); rp++) {
+		outfile << setw(16) << rp->second << ": ";
+		for (int i = 0; i < rp->first; i++) {
+
+			outfile << barChar;
+		}
+		outfile << endl;
+	}
+	outfile.close();
+}
