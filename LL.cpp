@@ -248,17 +248,20 @@ private:
 									newNode->SetNext(curr);
 									m_head = newNode;
 									check = true;
+									m_size++;
 								}
 								else {
 									prev->SetNext(newNode);
 									newNode->SetNext(curr);
 									check = true;
+									m_size++;
 								}
 							}
 							//if the data is greater than all data in LL
 							else if (curr->GetNext() == nullptr) {
 								curr->SetNext(newNode);
 								check = true;
+								m_size++;
 							}
 							prev = curr;
 							curr = curr->GetNext();
@@ -283,10 +286,19 @@ private:
 		
 		while ((curr != nullptr) && !(found)) {
 			if (curr->GetData().first == data) {
-				prev->SetNext(curr->GetNext());
-				delete curr;
-				found = true;
-				m_size--;
+				if (curr == m_head) {
+					prev = curr;
+					m_head = curr->GetNext();
+					delete prev;
+					found = true;
+					m_size--;
+				}
+				else {
+					prev->SetNext(curr->GetNext());
+					delete curr;
+					found = true;
+					m_size--;
+				}
 			}
 			else {
 				prev = curr;
@@ -332,6 +344,9 @@ private:
 	// Postcondition: Returns pair from LL using []
 	template <class T>
 	pair<T, int>& LL<T>::operator[] (int x) {
-
-		
+		Node<T>* curr = m_head;
+		for (int i = 0; i < x; i++) {
+			curr = curr->GetNext();
+		}
+		return curr->GetData();
 	}//Overloaded [] operator to pull data from LL
