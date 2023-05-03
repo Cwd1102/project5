@@ -36,7 +36,7 @@ void Bar::Start() {
 	RemoveSingles();
 	SortData();
 	DisplayBars();
-	//Export();
+	Export();
 }
 // Name: LoadFile()
 // Desc: Loads a file (everything as a string although could be anything stringlike)
@@ -57,26 +57,6 @@ void Bar::LoadFile() {
 	else {
 		cout << "File not opened" << endl;
 	}
-/*
-	for (unsigned int i = 0; i < newString.size() - 1; i++) {
-
-		if (newString.at(i) == '\n') {
-			RemovePunct(word);
-			m_data->Insert(word);
-			word = "";
-			numWords++;
-		}
-		else if (newString.at(i) == ' ') {
-			RemovePunct(word);
-			m_data->Insert(word);
-			word = "";
-			numWords++;
-		}
-		else {
-			word += newString.at(i);
-		}
-	}
-*/
 
 	while (myFile >> word) {
 		if (myFile.peek() == EOF) {
