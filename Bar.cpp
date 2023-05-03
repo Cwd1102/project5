@@ -53,15 +53,11 @@ void Bar::LoadFile() {
 
 	if (myFile.is_open()) {
 		cout << "File opened" << endl;
-		while (getline(myFile, word, ' ')) {
-			newString += (word + " ");
-		}
-		word = "";
 	}
 	else {
 		cout << "File not opened" << endl;
 	}
-
+/*
 	for (unsigned int i = 0; i < newString.size() - 1; i++) {
 
 		if (newString.at(i) == '\n') {
@@ -80,8 +76,9 @@ void Bar::LoadFile() {
 			word += newString.at(i);
 		}
 	}
-/*
-	while (word != "") {
+*/
+
+	while (myFile >> word) {
 		if (myFile.peek() == EOF) {
 			word.erase(word.size() - 1);
 		}
@@ -92,7 +89,6 @@ void Bar::LoadFile() {
 		}
 		numWords++;
 	}
-	*/
 	//m_data->Display();
 	cout << numWords << " words loaded" << endl;
 }
