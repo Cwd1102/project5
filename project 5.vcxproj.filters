@@ -18,10 +18,7 @@
     <ClCompile Include="LL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proj5.cpp">
+    <ClCompile Include="LL_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

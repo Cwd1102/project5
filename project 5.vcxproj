@@ -127,9 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bar.cpp" />
     <ClCompile Include="LL.cpp" />
-    <ClCompile Include="proj5.cpp" />
+    <ClCompile Include="LL_test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bar.h" />
